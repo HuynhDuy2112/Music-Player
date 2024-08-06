@@ -229,18 +229,7 @@ const app = {
         const notMute = $('.fa-volume-high')
         let isMute = false
 
-        muteBtn.addEventListener('click', () => {
-            if (isMute === true) {
-                music.volume = 0
-                mute.classList.add('mute-active')
-                notMute.classList.remove('mute-active')
-            }
-            else {
-                music.mute = false
-                mute.classList.remove('mute-active')
-                notMute.classList.add('mute-active')
-            }
-        })
+        
     },
 
     //create random value for the current index
