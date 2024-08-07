@@ -88,6 +88,27 @@ const app = {
         }, */
     ],
 
+    getAPI: function() {
+        const getAPI = 'http://localhost:3000/songsAPI'
+
+        function getSongs(callback) {
+            fetch(getAPI)
+           .then((response) => response.json())
+           .then((callback))
+           .catch(() => console.log('Không lấy được data'))
+        }
+
+        function start() {
+            getSongs(render)
+        }
+
+        function render(songs) {
+            console.log(songs);
+        }
+
+        start()
+    },
+
     //render list song and select music in the list
     render: function() {
         const htmls = this.songs.map((song, index) => {
@@ -229,7 +250,6 @@ const app = {
         const notMute = $('.fa-volume-high')
         let isMute = false
 
-        
     },
 
     //create random value for the current index
@@ -290,6 +310,9 @@ const app = {
     },
 
     start: function() {
+        this.getAPI()
+        console.log(this.getAPI());
+        
         this.renderCurrentSong()
         this.eventRepeatBtn()  
         this.eventPlayPauseBtn()

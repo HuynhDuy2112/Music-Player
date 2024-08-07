@@ -1,0 +1,70 @@
+{
+    "songsAPI": [
+        {
+            "name": "Đà Lạt Của Chúng Ta",
+            "singer": "Vicky Nhung",
+            "music": "./assets/music/dalatcuachungta.mp3",
+            "image": "./assets/img/dalatcuachungta.jpg"
+        },
+        {
+            "name": "Lấy Chồng Sớm Làm Gì",
+            "singer": "HuyR, Tuấn Cry",
+            "music": "./assets/music/laychongsomlamgi.mp3",
+            "image": "./assets/img/laychongsomlamgi.jpg"
+        },
+        {
+            "name": "Bạn Ơi",
+            "singer": "Myra Trần",
+            "music": "./assets/music/banoi.mp3",
+            "image": "./assets/img/banoi.jpg"
+        },
+        {
+            "name": "Bồng Bềnh Bồng Bềnh",
+            "singer": "Nam Em",
+            "music": "./assets/music/bongbenhbongbenh.mp3",
+            "image": "./assets/img/bongbenhbongbenh.jpg"
+        },
+        {
+            "name": "Có Lẽ Bên Nhau Là Sai",
+            "singer": "Hana Cẩm Tiên",
+            "music": "./assets/music/colebennhaulasai.mp3",
+            "image": "./assets/img/colebennhaulasai.jpg"
+        },
+        {
+            "name": "Ghé Qua",
+            "singer": "Tufu",
+            "music": "./assets/music/ghequa.mp3",
+            "image": "./assets/img/ghequa.jpg"
+        },
+        {
+            "name": "Lớn Rồi Còn Khóc Nhè",
+            "singer": "Diệu Nhi, Lynk Lee, Hương Ly, Thái Trinh, Huyền Baby",
+            "music": "./assets/music/lonroiconkhocnhe.mp3",
+            "image": "./assets/img/lonroiconkhocnhe.jpg"
+        },
+        {
+            "name": "Sau Này Của Chúng Ta",
+            "singer": "Lê Hiếu",
+            "music": "./assets/music/saunaycuachungta.mp3",
+            "image": "./assets/img/saunaycuachungta.jpg"
+        },
+        {
+            "name": "Vẽ Lại Bức Tranh",
+            "singer": "Bùi Anh Tuấn",
+            "music": "./assets/music/velaibuctranh.mp3",
+            "image": "./assets/img/velaibuctranh.jpg"
+        },
+        {
+            "name": "Xinh Tươi Việt Nam",
+            "singer": "V-Music",
+            "music": "./assets/music/xinhtuoivietnam.mp3",
+            "image": "./assets/img/xinhtuoivietnam.jpg"
+        },
+        {
+            "name": "Tình Yêu Cao Thượng",
+            "singer": "Phạm Quỳnh Anh",
+            "music": "./assets/music/tinhyeucaothuong.mp3",
+            "image": "./assets/img/tinhyeucaothuong.jpg"
+        }
+    ]
+}
