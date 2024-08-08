@@ -12,106 +12,29 @@ let isActive = false
 
 
 const app = {
+    songs: [],
     currentIndex: 0,
-    songs: [
-        {
-            name: 'Đà Lạt Của Chúng Ta',
-            singer: 'Vicky Nhung',
-            music: './assets/music/dalatcuachungta.mp3',
-            image: './assets/img/dalatcuachungta.jpg',
-        },
-        {
-            name: 'Lấy Chồng Sớm Làm Gì',
-            singer: 'HuyR, Tuấn Cry',
-            music: './assets/music/laychongsomlamgi.mp3',
-            image: './assets/img/laychongsomlamgi.jpg',
-        },
-        {
-            name: 'Bạn Ơi',
-            singer: 'Myra Trần',
-            music: './assets/music/banoi.mp3',
-            image: './assets/img/banoi.jpg',
-        },
-        {
-            name: 'Bồng Bềnh Bồng Bềnh',
-            singer: 'Nam Em',
-            music: './assets/music/bongbenhbongbenh.mp3',
-            image: './assets/img/bongbenhbongbenh.jpg',
-        },
-        {
-            name: 'Có Lẽ Bên Nhau Là Sai',
-            singer: 'Hana Cẩm Tiên',
-            music: './assets/music/colebennhaulasai.mp3',
-            image: './assets/img/colebennhaulasai.jpg',
-        },
-        {
-            name: 'Ghé Qua',
-            singer: 'Tufu',
-            music: './assets/music/ghequa.mp3',
-            image: './assets/img/ghequa.jpg',
-        },
-        {
-            name: 'Lớn Rồi Còn Khóc Nhè',
-            singer: 'Diệu Nhi, Lynk Lee, Hương Ly, Thái Trinh, Huyền Baby',
-            music: './assets/music/lonroiconkhocnhe.mp3',
-            image: './assets/img/lonroiconkhocnhe.jpg',
-        },
-        {
-            name: 'Sau Này Của Chúng Ta',
-            singer: 'Lê Hiếu',
-            music: './assets/music/saunaycuachungta.mp3',
-            image: './assets/img/saunaycuachungta.jpg',
-        },
-        {
-            name: 'Vẽ Lại Bức Tranh',
-            singer: 'Bùi Anh Tuấn',
-            music: './assets/music/velaibuctranh.mp3',
-            image: './assets/img/velaibuctranh.jpg',
-        },
-        {
-            name: 'Xinh Tươi Việt Nam',
-            singer: 'V-Music',
-            music: './assets/music/xinhtuoivietnam.mp3',
-            image: './assets/img/xinhtuoivietnam.jpg',
-        },
-        {
-            name: 'Tình Yêu Cao Thượng',
-            singer: 'Phạm Quỳnh Anh',
-            music: './assets/music/tinhyeucaothuong.mp3',
-            image: './assets/img/tinhyeucaothuong.jpg',
-        },
-        /* {
-            name: 'Bạn Ơi',
-            singer: 'Myra Trần',
-            music: './assets/music/testaudio.mp3',
-            image: './assets/img/banoi.jpg',
-        }, */
-    ],
 
-    getAPI: function() {
-        const getAPI = 'http://localhost:3000/songsAPI'
+    //call API function
+    getAPI: function(renderSong) {
+        var getAPI = 'http://localhost:3000/songsAPI'
 
-        function getSongs(callback) {
             fetch(getAPI)
-           .then((response) => response.json())
-           .then((callback))
-           .catch(() => console.log('Không lấy được data'))
-        }
-
-        function start() {
-            getSongs(render)
-        }
-
-        function render(songs) {
-            console.log(songs);
-        }
-
-        start()
+                .then((response) => response.json())
+                .then((data) => {
+                        renderSong.call(this, data)
+                        this.songs = data
+                        this.restart()
+                }) 
+                .catch((err) => err && console.log(err))
     },
 
     //render list song and select music in the list
-    render: function() {
-        const htmls = this.songs.map((song, index) => {
+    render: function(songs) {
+
+        if (!songs || songs.length === 0) {return}   
+
+        const htmls = songs?.map((song, index) => {
             return `
                 <div class="song" data-index="${index}">
                     <div class="thumb" style="background-image: url('${song.image}')">
@@ -126,7 +49,7 @@ const app = {
                 </div>
             `
         })
-        playList.innerHTML = htmls.join('') 
+        playList.innerHTML = htmls?.join('') 
 
         //click song in playlist
         const songElements = $$('.song') 
@@ -290,29 +213,35 @@ const app = {
         })
     }, 
 
-    getCurrentSong: function() {
+    getCurrentSong: function() {   
         return this.songs[this.currentIndex]
     },
 
-    eventSelectCurrentSong: function() {
+    /* eventSelectCurrentSong: function() {
         this.render()
         const songElements = $$('.song') 
         music.addEventListener('play', () => {
-            songElements[this.currentIndex].style.backgroundColor = ' red'
+            const currentSongElement = songElements[this.currentIndex]
+            if (currentSongElement) {
+                songElements.style.backgroundColor = 'red'
+            }
         })
-    },
+    }, */
 
     renderCurrentSong: function() {
         const song = this.getCurrentSong()
-        heading.textContent = song.name
-        image.style.backgroundImage = `url('${song.image}')`
-        music.src = song.music 
+        if (song) {
+            heading.textContent = song?.name
+            image.style.backgroundImage = `url('${song?.image}')`
+            music.src = song?.music 
+        }
     },
 
     start: function() {
-        this.getAPI()
-        console.log(this.getAPI());
-        
+        this.getAPI(this.render.bind(this))
+    },
+    
+    restart: function() {
         this.renderCurrentSong()
         this.eventRepeatBtn()  
         this.eventPlayPauseBtn()
@@ -321,9 +250,9 @@ const app = {
         this.autoNextSongAndRandomSong()
         this.handleEvent()
         this.eventMuteVolume()
-        this.eventSelectCurrentSong()
-        this.render()
-    }
+        // this.eventSelectCurrentSong()
+    },
+    
 }
 
 app.start()
