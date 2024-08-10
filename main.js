@@ -1,12 +1,15 @@
 const $ = document.querySelector.bind(document)
 const $$ = document.querySelectorAll.bind(document)
 
-const heading = $('header h2')
+const songName = $('header h2')
+const singerName = $('#singer')
 const image = $('.cd-thumb')
 const music = $('#audio')
 const playList = $('.playlist')
 const iconPause = $('.icon-pause')
 const iconPlay = $('.icon-play')
+const slider = $('.progress')
+
 
 let isActive = false
 
@@ -26,7 +29,7 @@ const app = {
                         this.songs = data
                         this.restart()
                 }) 
-                .catch((err) => err && console.log(err))
+                .catch((err) => err && alert('Load trang bị lỗi!'))
     },
 
     //render list song and select music in the list
@@ -138,41 +141,78 @@ const app = {
         })
     },
 
-    timeLineOfSong: function() {
-        const timeLine = $('.progress')
+    timeOfSong: function() {
         let timeCurrent = $('.time-current')
         let timeEnd = $('.time-end')
         
         //get length of current song with value is seconds
         //duration là trả về đồ dài của audio bằng giây
         music.addEventListener('loadedmetadata', () => {
-            timeLine.max = Math.floor(music.duration)
+            slider.max = Math.floor(music.duration)
             timeEnd.innerHTML = Math.floor(music.duration / 60) + ':' + 
             ('0' + Math.floor(music.duration % 60)).slice(-2)
         })
         
-        //update the timeLine with current time of the song in real-time
+        //update the slider with current time of the song in real-time
         //currentTime là trả về số giây hiện tại mà audio đang phát
         music.addEventListener('timeupdate', () => {
-            timeLine.value = Math.floor(music.currentTime)
+            slider.value = Math.floor(music.currentTime)
             timeCurrent.innerHTML = Math.floor(music.currentTime / 60) + ':' + 
             ('0' + Math.floor(music.currentTime % 60)).slice(-2)
         })
-        
-        //change value of time line
-        timeLine.addEventListener('input', () => {music.currentTime = timeLine.value})
-
-        //xử lí sự kiện tua nhạc không bị nhiễu tiếng 
-        timeLine.addEventListener('mousedown', () => {music.pause()})
-        timeLine.addEventListener('mouseup', () => {music.play()})
     },
 
     eventMuteVolume: function() {
         const muteBtn = $('.mute-volumn')
-        const mute = $('.fa-volume-xmark')
-        const notMute = $('.fa-volume-high')
-        let isMute = false
+        const notVolumn = $('.fa-volume-xmark')
+        const hightVolumn = $('.fa-volume-high')
+        const lowVolumn = $('.fa-volume-low')
 
+        muteBtn.addEventListener('click', () => {
+            if (music.muted == false) {
+                if(music.volume == 1) {                    
+                    music.volume = 0.3 
+                    lowVolumn.classList.remove('btn-mute-not-active') 
+                    hightVolumn.classList.add('btn-mute-not-active')
+                }
+                else
+                {
+                    music.muted = true
+                    lowVolumn.classList.add('btn-mute-not-active'),
+                    notVolumn.classList.remove('btn-mute-not-active')
+                }
+            }
+            else {
+                music.muted = false
+                music.volume = 1
+                hightVolumn.classList.remove('btn-mute-not-active')
+                notVolumn.classList.add('btn-mute-not-active')
+                lowVolumn.classList.add('btn-mute-not-active')
+            }
+        })
+
+    },
+
+    handleSlider: function() {
+        const interval = null
+
+        music.addEventListener('play', () => {
+            this.interval = setInterval(() => {                    
+                const value = (slider.value - slider.min) / (slider.max - slider.min) * 100
+                slider .style.background = `\linear-gradient(to right, #ff7e5f ${value}%, #ccc ${value}%)`
+            }, 500)
+        })
+
+        music.addEventListener('pause', () => {
+            clearInterval(this.interval)
+        })
+
+        //change value of time line
+        slider.addEventListener('input', () => {music.currentTime = slider.value})
+
+        //xử lí sự kiện tua nhạc không bị nhiễu tiếng 
+        slider.addEventListener('mousedown', () => {music.pause()})
+        slider.addEventListener('mouseup', () => {music.play()})
     },
 
     //create random value for the current index
@@ -187,7 +227,7 @@ const app = {
         randomBtn.addEventListener('click', () => {
             if (isActive === false) {
                 isActive = true
-                randomBtn.style.color = '#ec1f55'
+                randomBtn.style.color = 'var(--primary-color)'
             }
             else {
                 isActive = false
@@ -231,7 +271,8 @@ const app = {
     renderCurrentSong: function() {
         const song = this.getCurrentSong()
         if (song) {
-            heading.textContent = song?.name
+            songName.textContent = song?.name
+            singerName.textContent = song?.singer
             image.style.backgroundImage = `url('${song?.image}')`
             music.src = song?.music 
         }
@@ -246,10 +287,11 @@ const app = {
         this.eventRepeatBtn()  
         this.eventPlayPauseBtn()
         this.eventNextBackBtn()
-        this.timeLineOfSong()
+        this.timeOfSong()
         this.autoNextSongAndRandomSong()
         this.handleEvent()
         this.eventMuteVolume()
+        this.handleSlider()
         // this.eventSelectCurrentSong()
     },
     
