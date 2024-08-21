@@ -10,9 +10,7 @@ const iconPause = $('.icon-pause')
 const iconPlay = $('.icon-play')
 const slider = $('.progress')
 
-
 let isActive = false
-
 
 const app = {
     songs: [],
@@ -25,9 +23,9 @@ const app = {
             fetch(getAPI)
                 .then((response) => response.json())
                 .then((data) => {
-                        renderSong.call(this, data)
-                        this.songs = data
-                        this.restart()
+                    renderSong.call(this, data)
+                    this.songs = data
+                    this.restart()
                 }) 
                 .catch((err) => err && alert('Load trang bị lỗi!'))
     },
@@ -46,8 +44,9 @@ const app = {
                         <h3 class="title">${song.name}</h3>
                         <p class="author">${song.singer}</p>
                     </div>
-                    <div class="option">
-                        <i class="fas fa-ellipsis-h"></i>
+                    <div class="like">
+                        <i class="fa-regular fa-heart"></i>
+                        <i class="fa-solid fa-heart btn-mute-active"></i>
                     </div>
                 </div>
             `
@@ -63,7 +62,17 @@ const app = {
                 this.renderCurrentSong()
                 music.play()                
             })
+
         });
+
+        /* const likeSongs = $$('.like')
+        const likeSongElements = $$('.like i')
+
+        likeSongs.forEach((likeSong) => {
+            likeSong.addEventListener('click', () => {
+                console.log(likeSongElements)
+            })
+        }) */
     },
 
     //change width cd
@@ -87,9 +96,9 @@ const app = {
         const changeRepeatBtn = $('.btn-repeat i')
 
         repeatBtn.addEventListener('click', () => {
-            music.loop == true ? 
-            (music.loop = false, changeRepeatBtn.classList.remove('btn-active')) : 
-            (music.loop = true, changeRepeatBtn.classList.add('btn-active')) //if else music.
+            music.loop == true 
+            ?(music.loop = false, changeRepeatBtn.classList.remove('btn-active')) 
+            :(music.loop = true, changeRepeatBtn.classList.add('btn-active'))
         })
     },
 
@@ -170,24 +179,24 @@ const app = {
 
         muteBtn.addEventListener('click', () => {
             if (music.muted == false) {
-                if(music.volume == 1) {                    
-                    music.volume = 0.3 
-                    lowVolumn.classList.remove('btn-mute-not-active') 
-                    hightVolumn.classList.add('btn-mute-not-active')
+                if(music.volume === 1) {                    
+                    music.volume = 0.4 
+                    lowVolumn.classList.remove('btn-mute-active') 
+                    hightVolumn.classList.add('btn-mute-active')
                 }
                 else
                 {
                     music.muted = true
-                    lowVolumn.classList.add('btn-mute-not-active'),
-                    notVolumn.classList.remove('btn-mute-not-active')
+                    lowVolumn.classList.add('btn-mute-active'),
+                    notVolumn.classList.remove('btn-mute-active')
                 }
             }
             else {
                 music.muted = false
                 music.volume = 1
-                hightVolumn.classList.remove('btn-mute-not-active')
-                notVolumn.classList.add('btn-mute-not-active')
-                lowVolumn.classList.add('btn-mute-not-active')
+                hightVolumn.classList.remove('btn-mute-active')
+                notVolumn.classList.add('btn-mute-active')
+                lowVolumn.classList.add('btn-mute-active')
             }
         })
 
@@ -225,14 +234,9 @@ const app = {
         const randomBtn = $('.btn-random')        
     
         randomBtn.addEventListener('click', () => {
-            if (isActive === false) {
-                isActive = true
-                randomBtn.style.color = 'var(--primary-color)'
-            }
-            else {
-                isActive = false
-                randomBtn.style.color = '#666'
-            }
+            isActive === false 
+            ? (isActive = true, randomBtn.style.color = 'var(--primary-color)')
+            : (isActive = false, randomBtn.style.color = '#666')
         })
     },
 
@@ -283,6 +287,7 @@ const app = {
     },
     
     restart: function() {
+        this.render(0)
         this.renderCurrentSong()
         this.eventRepeatBtn()  
         this.eventPlayPauseBtn()
@@ -292,6 +297,7 @@ const app = {
         this.handleEvent()
         this.eventMuteVolume()
         this.handleSlider()
+        // this.handleListSong()
         // this.eventSelectCurrentSong()
     },
     

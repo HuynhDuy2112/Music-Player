@@ -30,6 +30,11 @@
 
                 <!-- Control -->
                 <div class="control">
+                    <div class="mute-volumn">
+                        <i class="fa-solid fa-volume-high"></i> 
+                        <i class="fa-solid fa-volume-low btn-mute-active"></i>
+                        <i class="fa-solid fa-volume-xmark btn-mute-active"></i>
+                    </div>
                     <div class="btn btn-repeat">
                         <!-- <i class="fas fa-redo"></i> -->
                         <i class="fa-solid fa-repeat"></i>
@@ -47,15 +52,13 @@
                     <div class="btn btn-random">
                         <i class="fas fa-random"></i>
                     </div>
+                    <div>
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
                 </div>
 
                 <div class="progress-block">
                     <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="100">
-                    <div class="mute-volumn">
-                        <i class="fa-solid fa-volume-high"></i> 
-                        <i class="fa-solid fa-volume-low btn-mute-not-active"></i>
-                        <i class="fa-solid fa-volume-xmark btn-mute-not-active"></i>
-                    </div>
                 </div>
                 
                 <div id="mucsic">
@@ -67,6 +70,17 @@
                     <time class="time-end"></time>
                 </div>
             </div>
+            
+        <!-- Navbar -->
+            <div class="tab">
+                <div class="tab-pane">
+                    <h4>Bài hát ưa thích</h3>
+                </div>
+                <div class="tab-pane">
+                    <h4>Danh sách bài hát</h4>
+                </div>
+            </div>
+
         <!-- Playlist -->
             <div class="playlist">
                 
